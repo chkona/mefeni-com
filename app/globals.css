@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+Georgian:wght@400;600;700;900&family=Noto+Sans+Georgian:wght@300;400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0a0806;
+  color: #e9e2d0;
+}
+
+::selection {
+  background: #c9a227;
+  color: #141009;
+}
+
+.glass-card {
+  @apply bg-white/[0.035] border border-gold/20 backdrop-blur-xl rounded-md transition-all duration-300;
+}
+.glass-card:hover {
+  @apply -translate-y-2 border-gold shadow-2xl shadow-black/40;
+}
