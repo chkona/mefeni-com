@@ -51,7 +51,7 @@ export default function KingDetailPage({ params }: { params: { slug: string } })
           </>
         )}
 
-        <p className="mt-8 leading-relaxed text-ink/90">{king.bio}</p>
+        <p className="mt-8 leading-relaxed text-ink/90 whitespace-pre-line">{king.bio}</p>
         <div className="flex flex-wrap gap-2 mt-8">
           {king.tags.map((t) => (
             <span
