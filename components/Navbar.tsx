@@ -6,7 +6,7 @@ import { useState } from "react";
 // დაამატე ახალი ობიექტი ამ მასივში.
 const LINKS = [
   { href: "/", label: "მთავარი" },
-  { href: "/kings", label: "მეფენი" },
+  { href: "/kings", label: "მეფეები" },
   { href: "/dynasties", label: "დინასტიები" },
   { href: "/battles", label: "ბრძოლები" },
   { href: "/timeline", label: "ქრონოლოგია" },
