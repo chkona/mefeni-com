@@ -14,7 +14,6 @@ export interface King {
   bio: string;         // სრული ტექსტი დეტალური გვერდისთვის
   tags: string[];
 }
-
 export const kings: King[] = [
   {
     slug: "pharnavaz-i",
