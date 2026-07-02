@@ -36,7 +36,7 @@ export default function HomePage() {
 
       <div className="flex gap-4 flex-wrap justify-center mt-10">
         <Link href="/kings" className="font-num text-sm uppercase tracking-wider px-8 py-4 bg-gold text-[#181209] rounded-sm hover:bg-goldBright transition">
-          დაათვალიერე მეფენი
+          დაათვალიერე მეფეები
         </Link>
         <Link href="/timeline" className="font-num text-sm uppercase tracking-wider px-8 py-4 border border-gold text-goldBright rounded-sm hover:bg-gold/10 transition">
           ქრონოლოგია
