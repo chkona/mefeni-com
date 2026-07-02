@@ -21,7 +21,7 @@ export default function KingsPage() {
     <section className="max-w-6xl mx-auto px-6 py-20">
       <div className="text-center max-w-xl mx-auto mb-14">
         <span className="font-num text-xs tracking-widest uppercase text-gold">სამეფო გალერეა</span>
-        <h1 className="font-display text-4xl mt-2">მეფენი და დედოფლები</h1>
+        <h1 className="font-display text-4xl mt-2">მეფეები და დედოფლები</h1>
         <p className="text-muted mt-3">მოძებნე სახელით ან გაფილტრე დინასტიის მიხედვით.</p>
       </div>
 
