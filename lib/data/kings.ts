@@ -20,7 +20,7 @@ export const kings: King[] = [
   {
     slug: "pharnavaz-i",
     name: "ფარნავაზ I",
-    image: "/images/kings/pharnavaz-i.png",
+    image: "/images/kings/IMG_5340.png",
     reign: "დაახლ. 299–234 ჩვ.წ.აღ-მდე",
     dynasty: "ფარნავაზიანი",
     ordinal: "I",
