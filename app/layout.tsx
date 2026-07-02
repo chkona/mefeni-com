@@ -4,9 +4,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "მეფენი.ge — ქართველ მეფეთა ისტორია",
+  title: "მეფენი.ge — ყველა მეფე ერთად",
   description:
-    "ქართველ მეფეთა, დინასტიების და ბრძოლების ინტერაქტიული ისტორია — ფარნავაზიდან გიორგი XII-მდე.",
+    "ქართველ მეფეთა,ისტორია — ფარნავაზიდან გიორგი XII-მდე.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
