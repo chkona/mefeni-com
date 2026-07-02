@@ -1,5 +1,6 @@
 import { kings } from "@/lib/data/kings";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 
 export function generateStaticParams() {
   return kings.map((k) => ({ slug: k.slug }));
@@ -11,6 +12,17 @@ export default function KingDetailPage({ params }: { params: { slug: string } })
 
   return (
     <section className="max-w-3xl mx-auto px-6 py-20">
+      {king.image && (
+        <div className="w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border border-gold/30 mx-auto mb-8">
+          <Image
+            src={king.image}
+            alt={king.name}
+            width={192}
+            height={192}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
       <span className="font-num text-xs tracking-widest uppercase text-gold">{king.dynasty} დინასტია</span>
       <h1 className="font-display text-4xl md:text-5xl text-goldBright mt-3">{king.name}</h1>
       <p className="font-num text-muted mt-2">{king.reign}</p>
