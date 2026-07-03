@@ -992,7 +992,7 @@ export const kings: King[] = [
     tags: ["იმერეთი"],
   },
   {
-    slug: "solomon-ii-imereti",
+        slug: "solomon-ii-imereti",
     name: "სოლომონ II",
     reign: "1789–1810",
     dynasty: "ბაგრატიონი",
@@ -1001,7 +1001,8 @@ export const kings: King[] = [
     bio: "დეტალური ბიოგრაფია მალე დაემატება — ინფორმაცია მუშავდება.",
     tags: ["იმერეთი"],
   },
-  ];
+];
+
 export type EraKey = "iberia" | "kartli-krist" | "erti" | "kartli" | "kakheti" | "imereti" | "other";
 
 export const ERA_LABELS: Record<EraKey, string> = {
@@ -1012,6 +1013,7 @@ export const ERA_LABELS: Record<EraKey, string> = {
   kakheti: "კახეთის სამეფო",
   imereti: "იმერეთის სამეფო",
   other: "სხვა",
+};
 
 export const TRUNK_ERAS: EraKey[] = ["iberia", "kartli-krist", "erti"];
 export const BRANCH_ERAS: EraKey[] = ["kartli", "kakheti", "imereti"];
