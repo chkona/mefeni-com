@@ -1,4 +1,5 @@
-"import DynastyChain from "@/components/DynastyChain";
+import DynastyChain from "@/components/DynastyChain";
+
 
 export default function KingsPage() {
   return (
