@@ -1012,7 +1012,7 @@ export const ERA_LABELS: Record<EraKey, string> = {
   kakheti: "კახეთის სამეფო",
   imereti: "იმერეთის სამეფო",
   other: "სხვა",
-};
+
 export const TRUNK_ERAS: EraKey[] = ["iberia", "kartli-krist", "erti"];
 export const BRANCH_ERAS: EraKey[] = ["kartli", "kakheti", "imereti"];
 
