@@ -357,7 +357,7 @@ export const kings: King[] = [
     ordinal: "III",
     era: "iberia",
     order: 26,
-    image: "images/kings/IMG_5404.png",
+    image: "/images/kings/IMG_5404.png",
     summary: "ინფორმაცია მალე დაემატება.",
     bio: "დეტალური ბიოგრაფია მალე დაემატება — ინფორმაცია მუშავდება.",
     tags: ["იბერია"],
