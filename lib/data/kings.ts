@@ -1001,4 +1001,25 @@ export const kings: King[] = [
     bio: "დეტალური ბიოგრაფია მალე დაემატება — ინფორმაცია მუშავდება.",
     tags: ["იმერეთი"],
   },
+export type EraKey = "iberia" | "kartli-krist" | "erti" | "kartli" | "kakheti" | "imereti" | "other";
+
+export const ERA_LABELS: Record<EraKey, string> = {
+  iberia: "ანტიკური ქართლი (იბერია)",
+  "kartli-krist": "ქართლი — ქრისტიანობის ხანა (IV–VI სს)",
+  erti: "ერთიანი საქართველო (975–1466)",
+  kartli: "ქართლის სამეფო (1466-შემდეგ)",
+  kakheti: "კახეთის სამეფო",
+  imereti: "იმერეთის სამეფო",
+  other: "სხვა",
+};
 ];
+export const TRUNK_ERAS: EraKey[] = ["iberia", "kartli-krist", "erti"];
+export const BRANCH_ERAS: EraKey[] = ["kartli", "kakheti", "imereti"];
+
+export function getEra(slug: string): EraKey {
+  const suffixOrder: EraKey[] = ["kartli-krist", "iberia", "erti", "kakheti", "imereti", "kartli"];
+  for (const s of suffixOrder) {
+    if (slug.endsWith(`-${s}`)) return s;
+  }
+  return "other";
+}
