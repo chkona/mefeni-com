@@ -333,6 +333,7 @@ export const kings: King[] = [
   {
     slug: "tamar-mefe",
     name: "თამარ მეფე",
+    image:"images/kings/IMG_5356.png",
     reign: "1184–1213",
     dynasty: "ბაგრატიონი",
     ordinal: "—",
