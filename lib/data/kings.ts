@@ -487,7 +487,7 @@ export const kings: King[] = [
     ordinal: "I",
     era: "kartli-krist",
     order: 10,
-    image: "",
+    image: "images/kings/IMG_5396.png",
     summary: "ინფორმაცია მალე დაემატება.",
     bio: "დეტალური ბიოგრაფია მალე დაემატება — ინფორმაცია მუშავდება.",
     tags: ["ქართლი"],
