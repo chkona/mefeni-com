@@ -1,0 +1,29 @@
+import Link from "next/link";
+import { King } from "@/lib/data/kings";
+
+export default function DynastyChain({ kings, compact = false }: { kings: King[]; compact?: boolean }) {
+  if (kings.length === 0) return null;
+  return (
+    <div className="relative pl-8">
+      <div className="absolute left-[7px] top-2 bottom-2 w-px bg-gradient-to-b from-gold/70 via-gold/40 to-gold/70" />
+      <div className="flex flex-col gap-3">
+        {kings.map((k) => (
+          <Link
+            key={k.slug}
+            href={`/kings/${k.slug}`}
+            className="relative group flex items-center gap-3 glass-card px-4 py-3"
+          >
+            <span className="absolute -left-8 top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-void border-2 border-gold group-hover:bg-gold transition" />
+            <span className="w-9 h-9 shrink-0 rounded-full border border-gold/60 flex items-center justify-center font-num text-xs text-goldBright">
+              {k.ordinal}
+            </span>
+            <span className="min-w-0">
+              <span className="block font-display text-sm md:text-base text-goldBright truncate">{k.name}</span>
+              <span className="block font-num text-[0.7rem] text-muted truncate">{k.reign}</span>
+            </span>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
