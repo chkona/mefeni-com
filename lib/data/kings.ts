@@ -1001,6 +1001,7 @@ export const kings: King[] = [
     bio: "დეტალური ბიოგრაფია მალე დაემატება — ინფორმაცია მუშავდება.",
     tags: ["იმერეთი"],
   },
+  ];
 export type EraKey = "iberia" | "kartli-krist" | "erti" | "kartli" | "kakheti" | "imereti" | "other";
 
 export const ERA_LABELS: Record<EraKey, string> = {
@@ -1012,7 +1013,6 @@ export const ERA_LABELS: Record<EraKey, string> = {
   imereti: "იმერეთის სამეფო",
   other: "სხვა",
 };
-];
 export const TRUNK_ERAS: EraKey[] = ["iberia", "kartli-krist", "erti"];
 export const BRANCH_ERAS: EraKey[] = ["kartli", "kakheti", "imereti"];
 
