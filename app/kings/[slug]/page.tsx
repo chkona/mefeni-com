@@ -62,6 +62,15 @@ export default function KingDetailPage({ params }: { params: { slug: string } })
             </span>
           ))}
         </div>
+
+        <div className="mt-10 pt-6 border-t border-gold/20">
+          <h2 className="font-num text-xs tracking-widest uppercase text-gold">
+            წყაროები
+          </h2>
+          <p className="mt-2 text-sm text-muted whitespace-pre-line">
+            {king.sources && king.sources.trim() !== "" ? king.sources : "წყარო მალე დაემატება."}
+          </p>
+        </div>
       </section>
     </article>
   );
