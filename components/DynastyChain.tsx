@@ -94,20 +94,22 @@ function EraColumn({ era }: { era: EraKey }) {
           {rows.map(({ order, kings }) => {
             const isPair = kings.length > 1;
             return (
-              <div
-                key={order}
-                className={
-                  isPair
-                    ? "flex items-center overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden -mr-4 pr-4"
-                    : "flex items-center"
-                }
-              >
-                {kings.map((k, i) => (
-                  <div key={k.slug} className="flex items-center shrink-0">
-                    {i > 0 && <AndMark />}
-                    <KingNode king={k} showDot={i === 0} compact={isPair} />
-                  </div>
-                ))}
+              <div key={order} className="relative flex items-center">
+                <span className="absolute -left-[27px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-amber-500 ring-4 ring-neutral-950" />
+                <div
+                  className={
+                    isPair
+                      ? "flex items-center overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden -mr-4 pr-4"
+                      : "flex items-center"
+                  }
+                >
+                  {kings.map((k, i) => (
+                    <div key={k.slug} className="flex items-center shrink-0">
+                      {i > 0 && <AndMark />}
+                      <KingNode king={k} showDot={false} compact={isPair} />
+                    </div>
+                  ))}
+                </div>
               </div>
             );
           })}
@@ -145,4 +147,3 @@ export default function DynastyChain() {
     </div>
   );
 }
-
