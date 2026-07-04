@@ -7,7 +7,7 @@ export default function KingsPage() {
         <div className="flex items-center gap-4 mb-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/gerbi.png"
+            src="/images/kings/IMG_5412.jpeg"
             alt="საქართველოს გერბი"
             className="w-14 h-14 object-contain"
           />
