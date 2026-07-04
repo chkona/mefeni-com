@@ -14,7 +14,6 @@ const LINKS = [
   { href: "/churches", label: "ეკლესიები" },
   { href: "/heroes", label: "გმირები" },
   { href: "/quiz", label: "ვიქტორინა" },
-  { href: "/ai-historian", label: "AI ისტორიკოსი" },
 ];
 
 export default function Navbar() {
