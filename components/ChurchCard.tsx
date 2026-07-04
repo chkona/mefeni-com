@@ -17,7 +17,7 @@ export default function ChurchCard({
       }`}
     >
       <span className="font-num text-[11px] tracking-widest uppercase text-gold">
-        {church.region}
+        {church.city} · {church.region}
       </span>
       <h3 className="font-display text-xl text-goldBright mt-1">{church.name}</h3>
       <p className="font-num text-muted text-sm mt-1">{church.founded}</p>
