@@ -9,6 +9,7 @@ import {
   TRUNK_ERAS,
   BRANCH_ERAS,
   TAIL_ERAS,
+  EGRISI_ERA,
   getKingsByEra,
 } from "@/lib/data/kings";
 
@@ -121,6 +122,33 @@ function EraColumn({ era }: { era: EraKey }) {
   );
 }
 
+function CollapsibleEraColumn({ era }: { era: EraKey }) {
+  const [open, setOpen] = useState(false);
+  const items = getKingsByEra(era);
+  if (items.length === 0) return null;
+
+  return (
+    <div className="mb-10">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-2 text-sm font-semibold text-amber-500 mb-1"
+      >
+        <span
+          className={`inline-block transition-transform ${open ? "rotate-90" : ""}`}
+        >
+          ▶
+        </span>
+        {ERA_LABELS[era]}
+      </button>
+      {open && (
+        <div className="mt-3">
+          <EraColumn era={era} />
+        </div>
+      )}
+    </div>
+  );
+}
+
 function BranchTabs() {
   const availableEras = BRANCH_ERAS.filter((era) => getKingsByEra(era).length > 0);
   const [active, setActive] = useState<EraKey>(availableEras[0]);
@@ -153,6 +181,9 @@ function BranchTabs() {
 export default function DynastyChain() {
   return (
     <div className="text-neutral-200">
+      {/* ეგრისი — ჩამოსაშლელი, იმავე ადგილას, ტრუნკის ზემოთ */}
+      <CollapsibleEraColumn era={EGRISI_ERA} />
+
       {/* Trunk: linear succession from antiquity to unified Georgia */}
       <div className="mb-10">
         {TRUNK_ERAS.map((era) => (
@@ -181,5 +212,4 @@ export default function DynastyChain() {
     </div>
   );
 }
-
 
