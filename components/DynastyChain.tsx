@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import {
-  kings,
   King,
   EraKey,
   ERA_LABELS,
@@ -11,14 +10,15 @@ import {
   getKingsByEra,
 } from "@/lib/data/kings";
 
-function KingNode({ king }: { king: King }) {
+function KingNode({ king, showDot }: { king: King; showDot: boolean }) {
   return (
     <Link
-      key={king.slug}
       href={`/kings/${king.slug}`}
       className="relative group flex items-center gap-3 py-2"
     >
-      <span className="absolute -left-[27px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-amber-500 ring-4 ring-neutral-950 group-hover:bg-amber-300 transition-colors" />
+      {showDot && (
+        <span className="absolute -left-[27px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-amber-500 ring-4 ring-neutral-950 group-hover:bg-amber-300 transition-colors" />
+      )}
       <span className="w-11 h-11 shrink-0 rounded-full overflow-hidden bg-neutral-800 border border-neutral-700 flex items-center justify-center text-xs text-neutral-400">
         {king.image ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -43,9 +43,22 @@ function KingNode({ king }: { king: King }) {
   );
 }
 
+function groupByOrder(items: King[]) {
+  const map = new Map<number, King[]>();
+  items.forEach((k) => {
+    if (!map.has(k.order)) map.set(k.order, []);
+    map.get(k.order)!.push(k);
+  });
+  return Array.from(map.entries())
+    .sort((a, b) => a[0] - b[0])
+    .map(([order, kings]) => ({ order, kings }));
+}
+
 function EraColumn({ era }: { era: EraKey }) {
   const items = getKingsByEra(era);
   if (items.length === 0) return null;
+  const rows = groupByOrder(items);
+
   return (
     <div className="min-w-[220px]">
       <h3 className="text-sm font-semibold text-amber-500 mb-3 sticky top-0 bg-neutral-950/90 backdrop-blur py-1">
@@ -53,9 +66,18 @@ function EraColumn({ era }: { era: EraKey }) {
       </h3>
       <div className="relative pl-8">
         <div className="absolute left-[7px] top-0 bottom-0 w-px bg-neutral-700" />
-        <div className="flex flex-col">
-          {items.map((k) => (
-            <KingNode key={k.slug} king={k} />
+        <div className="flex flex-col gap-1">
+          {rows.map(({ order, kings }) => (
+            <div key={order} className="flex items-center flex-wrap gap-x-2">
+              {kings.map((k, i) => (
+                <div key={k.slug} className="flex items-center">
+                  {i > 0 && (
+                    <span className="text-xs text-neutral-500 mx-1">და</span>
+                  )}
+                  <KingNode king={k} showDot={i === 0} />
+                </div>
+              ))}
+            </div>
           ))}
         </div>
       </div>
