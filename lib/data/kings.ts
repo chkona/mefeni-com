@@ -642,7 +642,7 @@ export const kings: King[] = [
     ordinal: "III",
     era: "erti",
     order: 1,
-    image: ""images/kings/IMG_5434.png,
+    image: "images/kings/IMG_5434.png",
     summary: "ინფორმაცია მალე დაემატება.",
     bio: "დეტალური ბიოგრაფია მალე დაემატება — ინფორმაცია მუშავდება.",
     tags: ["ერთიანი საქართველო"],
