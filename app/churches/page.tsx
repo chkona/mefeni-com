@@ -1,16 +1,42 @@
-// ეს გვერდი სტუბია — შეავსე იგივე პრინციპით, როგორც app/kings/page.tsx:
-// 1) შექმენი lib/data/[სახელი].ts მონაცემების ფაილი
-// 2) დაწერე ბარათის კომპონენტი components/ საქაღალდეში
-// 3) დააჯგუფე grid-ში, საჭიროებისამებრ დაამატე ძებნა/ფილტრი
+"use client";
 
-export default function Page() {
+import { useState } from "react";
+import { churches } from "@/lib/data/churches";
+import GeorgiaChurchMap from "@/components/GeorgiaChurchMap";
+import ChurchCard from "@/components/ChurchCard";
+
+export default function ChurchesPage() {
+  const [selected, setSelected] = useState<string | null>(null);
+
+  function handleSelect(slug: string) {
+    setSelected(slug);
+    const el = document.getElementById(`church-${slug}`);
+    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
   return (
-    <section className="max-w-4xl mx-auto px-6 py-24 text-center">
-      <h1 className="font-display text-4xl text-goldBright mb-4">გვერდი მუშავდება</h1>
-      <p className="text-muted">
-        ეს სექცია აშენდება იმავე სტრუქტურით, როგორც "მეფეები" — მონაცემთა ფაილი
-        + ბარათის კომპონენტი + grid გამოტანა.
-      </p>
+    <section className="max-w-5xl mx-auto px-6 py-16">
+      <div className="text-center mb-10">
+        <span className="font-num text-xs tracking-widest uppercase text-gold">
+          სულიერი მემკვიდრეობა
+        </span>
+        <h1 className="font-display text-4xl md:text-5xl text-goldBright mt-2">
+          საქართველოს ეკლესია-მონასტრები
+        </h1>
+        <p className="text-muted mt-4 max-w-2xl mx-auto">
+          მონიშნეთ წერტილი რუკაზე, რომ ნახოთ დეტალები, ან დაათვალიერეთ სია
+          ქვემოთ.
+        </p>
+      </div>
+
+      <GeorgiaChurchMap onSelect={handleSelect} selected={selected} />
+
+      <div className="grid sm:grid-cols-2 gap-5 mt-12">
+        {churches.map((c) => (
+          <ChurchCard key={c.slug} church={c} active={selected === c.slug} />
+        ))}
+      </div>
     </section>
   );
 }
+
