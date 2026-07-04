@@ -8,6 +8,7 @@ import {
   ERA_LABELS,
   TRUNK_ERAS,
   BRANCH_ERAS,
+  TAIL_ERAS,
   getKingsByEra,
 } from "@/lib/data/kings";
 
@@ -170,7 +171,15 @@ export default function DynastyChain() {
 
       {/* Branches: ერთ ხაზში სამეფოები, აირჩიე და ნახე ქრონოლოგია */}
       <BranchTabs />
+
+      {/* ქართლ-კახეთი — ყოველთვის ღია, მწკრივის ქვემოთ ჩვეულებრივად */}
+      <div className="mt-10">
+        {TAIL_ERAS.map((era) => (
+          <EraColumn key={era} era={era} />
+        ))}
+      </div>
     </div>
   );
 }
+
 
