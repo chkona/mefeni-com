@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import {
   King,
@@ -119,6 +120,35 @@ function EraColumn({ era }: { era: EraKey }) {
   );
 }
 
+function BranchTabs() {
+  const availableEras = BRANCH_ERAS.filter((era) => getKingsByEra(era).length > 0);
+  const [active, setActive] = useState<EraKey>(availableEras[0]);
+
+  return (
+    <div>
+      {/* ერთ ხაზში ყველა სამეფო — თაბი */}
+      <div className="flex gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-2 mb-8 border-b border-neutral-800">
+        {availableEras.map((era) => (
+          <button
+            key={era}
+            onClick={() => setActive(era)}
+            className={`shrink-0 px-4 py-2 text-sm font-medium rounded-t-md whitespace-nowrap transition-colors ${
+              active === era
+                ? "text-amber-400 border-b-2 border-amber-500 bg-neutral-900"
+                : "text-neutral-400 hover:text-neutral-200"
+            }`}
+          >
+            {ERA_LABELS[era]}
+          </button>
+        ))}
+      </div>
+
+      {/* არჩეული სამეფოს ქრონოლოგიური სია */}
+      <EraColumn era={active} />
+    </div>
+  );
+}
+
 export default function DynastyChain() {
   return (
     <div className="text-neutral-200">
@@ -138,12 +168,9 @@ export default function DynastyChain() {
         <div className="h-px flex-1 bg-neutral-700" />
       </div>
 
-      {/* Branches: parallel kingdoms after the split */}
-      <div className="flex flex-wrap gap-x-10 gap-y-8">
-        {BRANCH_ERAS.map((era) => (
-          <EraColumn key={era} era={era} />
-        ))}
-      </div>
+      {/* Branches: ერთ ხაზში სამეფოები, აირჩიე და ნახე ქრონოლოგია */}
+      <BranchTabs />
     </div>
   );
 }
+
