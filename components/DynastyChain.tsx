@@ -128,20 +128,30 @@ function CollapsibleEraColumn({ era }: { era: EraKey }) {
   if (items.length === 0) return null;
 
   return (
-    <div className="mb-10">
+    <div className="mb-6 border border-gold/15 rounded-lg bg-panel/40 overflow-hidden">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 text-sm font-semibold text-amber-500 mb-1"
+        className="w-full flex items-center justify-between gap-2 text-sm font-semibold text-amber-500 px-4 py-3 hover:bg-panel/70 transition-colors"
       >
-        <span
-          className={`inline-block transition-transform ${open ? "rotate-90" : ""}`}
+        <span>{ERA_LABELS[era]}</span>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          className={`shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         >
-          ▶
-        </span>
-        {ERA_LABELS[era]}
+          <path
+            d="M4 6l4 4 4-4"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </button>
       {open && (
-        <div className="mt-3">
+        <div className="px-4 pb-5 pt-1 border-t border-gold/10">
           <EraColumn era={era} />
         </div>
       )}
@@ -181,14 +191,15 @@ function BranchTabs() {
 export default function DynastyChain() {
   return (
     <div className="text-neutral-200">
-      {/* ეგრისი — ჩამოსაშლელი, იმავე ადგილას, ტრუნკის ზემოთ */}
+      {/* ეგრისი და ტრუნკის წინა ეპოქები — ჩამოსაშლელი, ერთიან საქართველომდე */}
       <CollapsibleEraColumn era={EGRISI_ERA} />
+      {TRUNK_ERAS.filter((era) => era !== "erti").map((era) => (
+        <CollapsibleEraColumn key={era} era={era} />
+      ))}
 
-      {/* Trunk: linear succession from antiquity to unified Georgia */}
+      {/* ერთიანი საქართველო — ჩვეულებრივად, ღია */}
       <div className="mb-10">
-        {TRUNK_ERAS.map((era) => (
-          <EraColumn key={era} era={era} />
-        ))}
+        <EraColumn era="erti" />
       </div>
 
       {/* Branch point marker */}
