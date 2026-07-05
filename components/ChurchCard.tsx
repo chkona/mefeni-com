@@ -21,6 +21,9 @@ export default function ChurchCard({
       </span>
       <h3 className="font-display text-xl text-goldBright mt-1">{church.name}</h3>
       <p className="font-num text-muted text-sm mt-1">{church.founded}</p>
+      {church.address && (
+        <p className="text-ink/70 text-xs mt-1">{church.address}</p>
+      )}
       <p className="text-ink/85 text-sm mt-3 leading-relaxed">{church.description}</p>
       <div className="flex flex-wrap gap-2 mt-4">
         {church.tags.map((t) => (
@@ -41,4 +44,5 @@ export default function ChurchCard({
     </div>
   );
 }
+
 
