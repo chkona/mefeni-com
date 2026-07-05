@@ -1,24 +1,57 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { REGIONS, getChurchesByRegion, getCitiesForRegion, getChurchesByCity } from "@/lib/data/churches";
+import { useState, useEffect, useMemo } from "react";
+import {
+  REGIONS,
+  Church,
+  getChurchesByRegion,
+  fetchRegionChurches,
+  REGION_JSON_FILE,
+} from "@/lib/data/churches";
 import ChurchCard from "@/components/ChurchCard";
 
 export default function ChurchRegions() {
   const availableRegions = REGIONS.filter(
-    (r) => getChurchesByRegion(r).length > 0
+    (r) => getChurchesByRegion(r).length > 0 || REGION_JSON_FILE[r]
   );
   const [activeRegion, setActiveRegion] = useState<string>(availableRegions[0]);
-  const cities = getCitiesForRegion(activeRegion);
-  const [activeCity, setActiveCity] = useState<string>(cities[0]);
+  const [remoteChurches, setRemoteChurches] = useState<Church[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  // რეგიონის შეცვლისას პირველი ქალაქი აირჩევა ავტომატურად
   useEffect(() => {
-    const newCities = getCitiesForRegion(activeRegion);
-    setActiveCity(newCities[0]);
+    let cancelled = false;
+    setRemoteChurches([]);
+    if (REGION_JSON_FILE[activeRegion]) {
+      setLoading(true);
+      fetchRegionChurches(activeRegion).then((data) => {
+        if (!cancelled) {
+          setRemoteChurches(data);
+          setLoading(false);
+        }
+      });
+    }
+    return () => {
+      cancelled = true;
+    };
   }, [activeRegion]);
 
-  const activeChurches = getChurchesByCity(activeRegion, activeCity);
+  const allChurches = useMemo(
+    () => [...getChurchesByRegion(activeRegion), ...remoteChurches],
+    [activeRegion, remoteChurches]
+  );
+
+  const cities = useMemo(
+    () => Array.from(new Set(allChurches.map((c) => c.city).filter(Boolean))),
+    [allChurches]
+  );
+
+  const [activeCity, setActiveCity] = useState<string>("");
+
+  useEffect(() => {
+    setActiveCity(cities[0] || "");
+  }, [cities.join("|")]);
+
+  const activeChurches = allChurches.filter((c) => c.city === activeCity);
 
   return (
     <div>
@@ -38,6 +71,10 @@ export default function ChurchRegions() {
           </button>
         ))}
       </div>
+
+      {loading && (
+        <p className="text-sm text-muted mb-4">იტვირთება…</p>
+      )}
 
       {/* ქალაქები/მუნიციპალიტეტები არჩეულ რეგიონში */}
       <div className="flex gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-2 mb-8">
