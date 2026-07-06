@@ -28,7 +28,7 @@ export type King = {
 export const kings: King[] = [
   {
     slug: "iberia-01",
-    name: "აზო (აზონი)",
+    name: "კახი I ახვ",
     reign: "ძვ.წ. IV ს. (ტრადიციული/სავარაუდო თარიღი)",
     dynasty: "ფარნავაზიანი",
     ordinal: "",
