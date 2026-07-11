@@ -13,7 +13,7 @@ const LINKS = [
   { href: "/maps", label: "რუკები" },
   { href: "/churches", label: "ეკლესიები" },
   { href: "/heroes", label: "გმირები" },
-  { href: "/quiz", label: "ვიქტორინა" },
+  { href: "/abiturientebi", label: "აბიტურიენტები" },
 ];
 
 export default function Navbar() {
@@ -49,3 +49,4 @@ export default function Navbar() {
     </nav>
   );
 }
+
