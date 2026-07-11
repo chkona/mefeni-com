@@ -28,10 +28,7 @@ export default function ExamRunner({ topic }: { topic: ExamTopic }) {
 
   const score = useMemo(
     () =>
-      answers.reduce(
-        (acc, a, i) => acc + (a === topic.questions[i].correctIndex ? 1 : 0),
-        0
-      ),
+      answers.filter((a, i) => a === topic.questions[i].correctIndex).length,
     [answers, topic.questions]
   );
 
@@ -182,4 +179,6 @@ export default function ExamRunner({ topic }: { topic: ExamTopic }) {
     </div>
   );
 }
+
+
 
