@@ -26,10 +26,14 @@ export default function AbiturientebiPage() {
           >
             <h2 className="font-display text-xl text-goldBright">{topic.title}</h2>
             <p className="text-sm text-muted mt-2">{topic.description}</p>
-            <p className="text-xs text-gold mt-3">{topic.questions.length} კითხვა →</p>
+            <p className="text-xs text-gold mt-3">
+              {topic.subtopics.length} ქვეთემა ·{" "}
+              {topic.subtopics.reduce((n, s) => n + s.questions.length, 0)} კითხვა →
+            </p>
           </Link>
         ))}
       </div>
     </section>
   );
 }
+
