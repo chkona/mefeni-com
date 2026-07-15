@@ -4,18 +4,47 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ბნელი თემა (ნაგულისხმევი) */
+:root {
+  --color-void: 10 8 6;
+  --color-panel: 20 16 9;
+  --color-panel2: 28 22 16;
+  --color-gold: 201 162 39;
+  --color-goldBright: 238 205 118;
+  --color-wine: 92 26 26;
+  --color-wineBright: 138 42 42;
+  --color-parchment: 236 226 200;
+  --color-ink: 233 226 208;
+  --color-muted: 154 143 116;
+}
+
+/* ღია (დღის) თემა */
+:root.light {
+  --color-void: 246 241 228;
+  --color-panel: 255 253 248;
+  --color-panel2: 240 230 210;
+  --color-gold: 168 121 15;
+  --color-goldBright: 124 86 5;
+  --color-wine: 122 32 32;
+  --color-wineBright: 156 43 43;
+  --color-parchment: 58 47 29;
+  --color-ink: 43 36 23;
+  --color-muted: 107 95 69;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: #0a0806;
-  color: #e9e2d0;
+  background-color: rgb(var(--color-void));
+  color: rgb(var(--color-ink));
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 ::selection {
-  background: #c9a227;
-  color: #141009;
+  background: rgb(var(--color-gold));
+  color: rgb(var(--color-panel));
 }
 
 .glass-card {
@@ -24,3 +53,4 @@ body {
 .glass-card:hover {
   @apply -translate-y-2 border-gold shadow-2xl shadow-black/40;
 }
+
