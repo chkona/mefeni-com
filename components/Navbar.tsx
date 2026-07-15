@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 // ნავიგაციის ბმულების სია — ახალი გვერდის დასამატებლად უბრალოდ
 // დაამატე ახალი ობიექტი ამ მასივში.
@@ -33,9 +34,12 @@ export default function Navbar() {
         ))}
       </div>
 
-      <button className="md:hidden text-gold text-2xl" onClick={() => setOpen(!open)}>
-        ☰
-      </button>
+      <div className="flex items-center gap-3">
+        <ThemeToggle />
+        <button className="md:hidden text-gold text-2xl" onClick={() => setOpen(!open)}>
+          ☰
+        </button>
+      </div>
 
       {open && (
         <div className="absolute top-full left-0 right-0 flex flex-col gap-4 bg-void/95 border-b border-gold/20 p-6 md:hidden">
@@ -49,4 +53,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
 
