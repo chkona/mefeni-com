@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { ExamTopic } from "@/lib/data/exam-questions";
+import { ExamSubtopic } from "@/lib/data/exam-questions";
 
 const SECONDS_PER_QUESTION = 60; // ეროვნულის მსგავსი ტემპი
 
-export default function ExamRunner({ topic }: { topic: ExamTopic }) {
+export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
   const totalSeconds = topic.questions.length * SECONDS_PER_QUESTION;
   const [started, setStarted] = useState(false);
   const [current, setCurrent] = useState(0);
@@ -179,6 +179,5 @@ export default function ExamRunner({ topic }: { topic: ExamTopic }) {
     </div>
   );
 }
-
 
 
