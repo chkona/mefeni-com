@@ -28,10 +28,10 @@ function KingNode({
       className="relative group flex items-center gap-2.5 py-2 shrink-0"
     >
       {showDot && (
-        <span className="absolute -left-[27px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-amber-500 ring-4 ring-neutral-950 group-hover:bg-amber-300 transition-colors" />
+        <span className="absolute -left-[27px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-gold ring-4 ring-void group-hover:bg-goldBright transition-colors" />
       )}
       <span
-        className={`shrink-0 rounded-full overflow-hidden bg-neutral-800 border border-neutral-700 flex items-center justify-center text-neutral-400 ${
+        className={`shrink-0 rounded-full overflow-hidden bg-panel2 border border-gold/20 flex items-center justify-center text-muted ${
           compact ? "w-8 h-8 text-[10px]" : "w-11 h-11 text-xs"
         }`}
       >
@@ -48,14 +48,14 @@ function KingNode({
       </span>
       <span className="min-w-0">
         <span
-          className={`block font-medium text-neutral-100 whitespace-nowrap group-hover:text-amber-400 transition-colors ${
+          className={`block font-medium text-ink whitespace-nowrap group-hover:text-goldBright transition-colors ${
             compact ? "text-sm" : ""
           }`}
         >
           {king.name}
         </span>
         {king.reign && !compact && (
-          <span className="block text-xs text-neutral-500">{king.reign}</span>
+          <span className="block text-xs text-muted">{king.reign}</span>
         )}
       </span>
     </Link>
@@ -64,7 +64,7 @@ function KingNode({
 
 function AndMark() {
   return (
-    <span className="font-serif italic text-amber-500/80 text-sm mx-2.5 select-none shrink-0">
+    <span className="font-serif italic text-gold/80 text-sm mx-2.5 select-none shrink-0">
       და
     </span>
   );
@@ -88,17 +88,17 @@ function EraColumn({ era }: { era: EraKey }) {
 
   return (
     <div className="min-w-[220px]">
-      <h3 className="text-sm font-semibold text-amber-500 mb-3 sticky top-0 bg-neutral-950/90 backdrop-blur py-1">
+      <h3 className="text-sm font-semibold text-gold mb-3 sticky top-0 bg-void/90 backdrop-blur py-1">
         {ERA_LABELS[era]}
       </h3>
       <div className="relative pl-8">
-        <div className="absolute left-[7px] top-0 bottom-0 w-px bg-neutral-700" />
+        <div className="absolute left-[7px] top-0 bottom-0 w-px bg-gold/20" />
         <div className="flex flex-col gap-1">
           {rows.map(({ order, kings }) => {
             const isPair = kings.length > 1;
             return (
               <div key={order} className="relative flex items-center">
-                <span className="absolute -left-[27px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-amber-500 ring-4 ring-neutral-950" />
+                <span className="absolute -left-[27px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-gold ring-4 ring-void" />
                 <div
                   className={
                     isPair
@@ -131,7 +131,7 @@ function CollapsibleEraColumn({ era }: { era: EraKey }) {
     <div className="mb-6 border border-gold/15 rounded-lg bg-panel/40 overflow-hidden">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between gap-2 text-sm font-semibold text-amber-500 px-4 py-3 hover:bg-panel/70 transition-colors"
+        className="w-full flex items-center justify-between gap-2 text-sm font-semibold text-gold px-4 py-3 hover:bg-panel/70 transition-colors"
       >
         <span>{ERA_LABELS[era]}</span>
         <svg
@@ -166,15 +166,15 @@ function BranchTabs() {
   return (
     <div>
       {/* ერთ ხაზში ყველა სამეფო — თაბი */}
-      <div className="flex gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-2 mb-8 border-b border-neutral-800">
+      <div className="flex gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-2 mb-8 border-b border-gold/15">
         {availableEras.map((era) => (
           <button
             key={era}
             onClick={() => setActive(era)}
             className={`shrink-0 px-4 py-2 text-sm font-medium rounded-t-md whitespace-nowrap transition-colors ${
               active === era
-                ? "text-amber-400 border-b-2 border-amber-500 bg-neutral-900"
-                : "text-neutral-400 hover:text-neutral-200"
+                ? "text-goldBright border-b-2 border-gold bg-panel2"
+                : "text-muted hover:text-ink"
             }`}
           >
             {ERA_LABELS[era]}
@@ -190,7 +190,7 @@ function BranchTabs() {
 
 export default function DynastyChain() {
   return (
-    <div className="text-neutral-200">
+    <div className="text-ink">
       {/* ეგრისი და ტრუნკის წინა ეპოქები — ჩამოსაშლელი, ერთიან საქართველომდე */}
       <CollapsibleEraColumn era={EGRISI_ERA} />
       {TRUNK_ERAS.filter((era) => era !== "erti").map((era) => (
@@ -204,11 +204,11 @@ export default function DynastyChain() {
 
       {/* Branch point marker */}
       <div className="relative mb-6 flex items-center gap-3">
-        <div className="h-px flex-1 bg-neutral-700" />
-        <span className="text-xs uppercase tracking-wide text-neutral-500">
+        <div className="h-px flex-1 bg-gold/20" />
+        <span className="text-xs uppercase tracking-wide text-muted">
           1466 — გაყოფა სამეფოებად
         </span>
-        <div className="h-px flex-1 bg-neutral-700" />
+        <div className="h-px flex-1 bg-gold/20" />
       </div>
 
       {/* Branches: ერთ ხაზში სამეფოები, აირჩიე და ნახე ქრონოლოგია */}
@@ -223,4 +223,5 @@ export default function DynastyChain() {
     </div>
   );
 }
+
 
