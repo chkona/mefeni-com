@@ -2,13 +2,23 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { ExamSubtopic } from "@/lib/data/exam-questions";
+import { ExamSubtopic, ExamQuestion } from "@/lib/data/exam-questions";
 
 const SECONDS_PER_QUESTION = 60; // ეროვნულის მსგავსი ტემპი
 
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
-  const totalSeconds = topic.questions.length * SECONDS_PER_QUESTION;
   const [started, setStarted] = useState(false);
+  const [questions, setQuestions] = useState<ExamQuestion[]>(topic.questions);
+  const totalSeconds = questions.length * SECONDS_PER_QUESTION;
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<(number | null)[]>(
     Array(topic.questions.length).fill(null)
@@ -27,10 +37,19 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
   }, [started, finished, secondsLeft]);
 
   const score = useMemo(
-    () =>
-      answers.filter((a, i) => a === topic.questions[i].correctIndex).length,
-    [answers, topic.questions]
+    () => answers.filter((a, i) => a === questions[i].correctIndex).length,
+    [answers, questions]
   );
+
+  function startExam() {
+    // ყოველ ჯერზე კითხვების თანმიმდევრობა ახლიდან ირევა
+    setQuestions(shuffle(topic.questions));
+    setAnswers(Array(topic.questions.length).fill(null));
+    setCurrent(0);
+    setSecondsLeft(topic.questions.length * SECONDS_PER_QUESTION);
+    setFinished(false);
+    setStarted(true);
+  }
 
   function selectAnswer(idx: number) {
     if (finished) return;
@@ -51,14 +70,14 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
     return (
       <div className="max-w-xl mx-auto text-center">
         <p className="text-ink/90 mb-2">
-          {topic.questions.length} კითხვა · დრო: {mmss(totalSeconds)}
+          {topic.questions.length} კითხვა · დრო: {mmss(topic.questions.length * SECONDS_PER_QUESTION)}
         </p>
         <p className="text-muted text-sm mb-8">
-          გამოცდის დაწყების შემდეგ საათი ირთვება და აღარ ჩერდება — ეს
-          იმეორებს რეალური გამოცდის რეჟიმს.
+          გამოცდის დაწყების შემდეგ საათი ირთვება და აღარ ჩერდება. კითხვების
+          თანმიმდევრობა ყოველ ჯერზე ახლიდან ირევა.
         </p>
         <button
-          onClick={() => setStarted(true)}
+          onClick={startExam}
           className="px-6 py-3 rounded-md bg-gold text-void font-semibold hover:bg-goldBright transition-colors"
         >
           გამოცდის დაწყება
@@ -75,11 +94,11 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
             შედეგი
           </p>
           <p className="font-display text-5xl text-goldBright mt-2">
-            {score} / {topic.questions.length}
+            {score} / {questions.length}
           </p>
         </div>
         <div className="space-y-4">
-          {topic.questions.map((q, i) => {
+          {questions.map((q, i) => {
             const given = answers[i];
             const correct = given === q.correctIndex;
             return (
@@ -122,13 +141,14 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
     );
   }
 
-  const q = topic.questions[current];
+  const q = questions[current];
+  const given = answers[current];
 
   return (
     <div className="max-w-xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <span className="text-xs text-muted">
-          კითხვა {current + 1} / {topic.questions.length}
+          კითხვა {current + 1} / {questions.length}
         </span>
         <span className="font-num text-goldBright text-lg">{mmss(secondsLeft)}</span>
       </div>
@@ -136,19 +156,27 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
       <div className="rounded-lg border border-gold/15 bg-panel p-6 mb-6">
         <p className="text-ink text-lg mb-5">{q.question}</p>
         <div className="space-y-3">
-          {q.options.map((opt, idx) => (
-            <button
-              key={idx}
-              onClick={() => selectAnswer(idx)}
-              className={`w-full text-left px-4 py-3 rounded-md border transition-colors ${
-                answers[current] === idx
-                  ? "border-goldBright bg-panel2 text-goldBright"
-                  : "border-gold/15 text-ink/85 hover:border-gold/40"
-              }`}
-            >
-              {String.fromCharCode(65 + idx)}) {opt}
-            </button>
-          ))}
+          {q.options.map((opt, idx) => {
+            let style = "border-gold/15 text-ink/85 hover:border-gold/40";
+            if (given !== null) {
+              if (idx === q.correctIndex) {
+                // სწორი ვარიანტი ყოველთვის მწვანედ გამოსდის პასუხის გაცემის შემდეგ
+                style = "border-green-600 bg-green-600/15 text-green-400";
+              } else if (idx === given) {
+                // ეს კონკრეტული, არასწორად შერჩეული ვარიანტი წითლდება
+                style = "border-wine bg-wine/15 text-wineBright";
+              }
+            }
+            return (
+              <button
+                key={idx}
+                onClick={() => selectAnswer(idx)}
+                className={`w-full text-left px-4 py-3 rounded-md border transition-colors ${style}`}
+              >
+                {String.fromCharCode(65 + idx)}) {opt}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -160,7 +188,7 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
         >
           ← წინა
         </button>
-        {current < topic.questions.length - 1 ? (
+        {current < questions.length - 1 ? (
           <button
             onClick={() => setCurrent((c) => c + 1)}
             className="text-sm text-gold hover:text-goldBright"
@@ -179,5 +207,4 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
     </div>
   );
 }
-
 
