@@ -1,10 +1,16 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { ExamSubtopic, ExamQuestion } from "@/lib/data/exam-questions";
 
 const SECONDS_PER_QUESTION = 60; // ეროვნულის მსგავსი ტემპი
+
+// ადმინისტრატორის მიერ განსაზღვრული ნაგულისხმევი პარამეტრები —
+// მომხმარებელს შეუძლია გამოცდის დროს გამორთოს/ჩართოს ავტომატური გადასვლა,
+// მაგრამ ეს არის საწყისი, ნაგულისხმევი მდგომარეობა და დაყოვნება.
+const AUTO_ADVANCE_DEFAULT = true;
+const AUTO_ADVANCE_DELAY_MS = 900;
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -25,6 +31,29 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
   );
   const [secondsLeft, setSecondsLeft] = useState(totalSeconds);
   const [finished, setFinished] = useState(false);
+  const [autoAdvance, setAutoAdvance] = useState(AUTO_ADVANCE_DEFAULT);
+  const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("mefeni-auto-advance");
+      if (saved !== null) setAutoAdvance(saved === "1");
+    } catch {
+      // localStorage მიუწვდომელია — ნაგულისხმევი მნიშვნელობა რჩება
+    }
+  }, []);
+
+  function toggleAutoAdvance() {
+    setAutoAdvance((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("mefeni-auto-advance", next ? "1" : "0");
+      } catch {
+        // უბრალოდ არ დაიმახსოვრებს არჩევანს შემდეგ ჯერზე
+      }
+      return next;
+    });
+  }
 
   useEffect(() => {
     if (!started || finished) return;
@@ -35,6 +64,14 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
     const t = setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
     return () => clearTimeout(t);
   }, [started, finished, secondsLeft]);
+
+  // ქითხვის შეცვლისას (წინა/შემდეგი) გაუქმდეს ნებისმიერი მოლოდინში მყოფი
+  // ავტო-გადასვლის ტაიმერი, რომ ორმაგად არ გადახტეს გვერდი
+  useEffect(() => {
+    return () => {
+      if (advanceTimer.current) clearTimeout(advanceTimer.current);
+    };
+  }, [current]);
 
   const score = useMemo(
     () => answers.filter((a, i) => a === questions[i].correctIndex).length,
@@ -53,9 +90,17 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
 
   function selectAnswer(idx: number) {
     if (finished) return;
+    if (answers[current] !== null) return; // პასუხი უკვე მიცემულია — შეცვლა არ შეიძლება
     const next = [...answers];
     next[current] = idx;
     setAnswers(next);
+
+    if (advanceTimer.current) clearTimeout(advanceTimer.current);
+    if (autoAdvance) {
+      advanceTimer.current = setTimeout(() => {
+        setCurrent((c) => (c < questions.length - 1 ? c + 1 : c));
+      }, AUTO_ADVANCE_DELAY_MS);
+    }
   }
 
   function mmss(s: number) {
@@ -146,31 +191,52 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
 
   return (
     <div className="max-w-xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-3">
         <span className="text-xs text-muted">
           კითხვა {current + 1} / {questions.length}
         </span>
         <span className="font-num text-goldBright text-lg">{mmss(secondsLeft)}</span>
       </div>
 
+      <div className="flex items-center justify-end gap-2 mb-3">
+        <span className="text-xs text-muted">ავტომატური გადასვლა</span>
+        <button
+          onClick={toggleAutoAdvance}
+          aria-pressed={autoAdvance}
+          className={`w-10 h-5 rounded-full transition-colors relative ${
+            autoAdvance ? "bg-gold" : "bg-panel2 border border-gold/20"
+          }`}
+        >
+          <span
+            className={`absolute top-0.5 w-4 h-4 rounded-full bg-void transition-transform ${
+              autoAdvance ? "translate-x-5" : "translate-x-0.5"
+            }`}
+          />
+        </button>
+      </div>
+
       <div className="rounded-lg border border-gold/15 bg-panel p-6 mb-6">
         <p className="text-ink text-lg mb-5">{q.question}</p>
         <div className="space-y-3">
           {q.options.map((opt, idx) => {
-            let style = "border-gold/15 text-ink/85 hover:border-gold/40";
+            let style = "border-gold/15 text-ink/85 hover:border-gold/40 cursor-pointer";
             if (given !== null) {
               if (idx === q.correctIndex) {
                 // სწორი ვარიანტი ყოველთვის მწვანედ გამოსდის პასუხის გაცემის შემდეგ
-                style = "border-green-600 bg-green-600/15 text-green-400";
+                style = "border-green-600 bg-green-600/15 text-green-400 cursor-default";
               } else if (idx === given) {
                 // ეს კონკრეტული, არასწორად შერჩეული ვარიანტი წითლდება
-                style = "border-wine bg-wine/15 text-wineBright";
+                style = "border-wine bg-wine/15 text-wineBright cursor-default";
+              } else {
+                // პასუხი უკვე დაფიქსირდა — დანარჩენი ვარიანტები ჩაბნელებულია და აღარ იცვლება
+                style = "border-gold/10 text-muted/60 cursor-default";
               }
             }
             return (
               <button
                 key={idx}
                 onClick={() => selectAnswer(idx)}
+                disabled={given !== null}
                 className={`w-full text-left px-4 py-3 rounded-md border transition-colors ${style}`}
               >
                 {String.fromCharCode(65 + idx)}) {opt}
