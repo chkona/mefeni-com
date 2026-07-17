@@ -22,14 +22,13 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
+  const maxQ = topic.questions.length;
   const [started, setStarted] = useState(false);
+  const [questionCount, setQuestionCount] = useState(Math.min(maxQ, 20));
   const [questions, setQuestions] = useState<ExamQuestion[]>(topic.questions);
-  const totalSeconds = questions.length * SECONDS_PER_QUESTION;
   const [current, setCurrent] = useState(0);
-  const [answers, setAnswers] = useState<(number | null)[]>(
-    Array(topic.questions.length).fill(null)
-  );
-  const [secondsLeft, setSecondsLeft] = useState(totalSeconds);
+  const [answers, setAnswers] = useState<(number | null)[]>([]);
+  const [secondsLeft, setSecondsLeft] = useState(0);
   const [finished, setFinished] = useState(false);
   const [autoAdvance, setAutoAdvance] = useState(AUTO_ADVANCE_DEFAULT);
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -65,8 +64,8 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
     return () => clearTimeout(t);
   }, [started, finished, secondsLeft]);
 
-  // ქითხვის შეცვლისას (წინა/შემდეგი) გაუქმდეს ნებისმიერი მოლოდინში მყოფი
-  // ავტო-გადასვლის ტაიმერი, რომ ორმაგად არ გადახტეს გვერდი
+  // კითხვის შეცვლისას გაუქმდეს ნებისმიერი მოლოდინში მყოფი ავტო-გადასვლის
+  // ტაიმერი, რომ ორმაგად არ გადახტეს გვერდი
   useEffect(() => {
     return () => {
       if (advanceTimer.current) clearTimeout(advanceTimer.current);
@@ -74,16 +73,16 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
   }, [current]);
 
   const score = useMemo(
-    () => answers.filter((a, i) => a === questions[i].correctIndex).length,
+    () => answers.filter((a, i) => a === questions[i]?.correctIndex).length,
     [answers, questions]
   );
 
   function startExam() {
-    // ყოველ ჯერზე კითხვების თანმიმდევრობა ახლიდან ირევა
-    setQuestions(shuffle(topic.questions));
-    setAnswers(Array(topic.questions.length).fill(null));
+    const picked = shuffle(topic.questions).slice(0, questionCount);
+    setQuestions(picked);
+    setAnswers(Array(picked.length).fill(null));
     setCurrent(0);
-    setSecondsLeft(topic.questions.length * SECONDS_PER_QUESTION);
+    setSecondsLeft(picked.length * SECONDS_PER_QUESTION);
     setFinished(false);
     setStarted(true);
   }
@@ -111,15 +110,48 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
     return `${m}:${sec}`;
   }
 
+  // --- დაწყების ეკრანი: კითხვების რაოდენობის არჩევა ---
   if (!started) {
     return (
-      <div className="max-w-xl mx-auto text-center">
-        <p className="text-ink/90 mb-2">
-          {topic.questions.length} კითხვა · დრო: {mmss(topic.questions.length * SECONDS_PER_QUESTION)}
-        </p>
-        <p className="text-muted text-sm mb-8">
-          გამოცდის დაწყების შემდეგ საათი ირთვება და აღარ ჩერდება. კითხვების
-          თანმიმდევრობა ყოველ ჯერზე ახლიდან ირევა.
+      <div className="max-w-sm mx-auto text-center">
+        <p className="text-muted text-sm mb-1">სულ ხელმისაწვდომია {maxQ} კითხვა</p>
+        <label className="block mb-6">
+          <span className="text-xs text-gold uppercase tracking-widest">
+            რამდენი კითხვა გსურთ?
+          </span>
+          <input
+            type="number"
+            min={1}
+            max={maxQ}
+            value={questionCount}
+            onChange={(e) => {
+              const v = Math.max(1, Math.min(maxQ, Number(e.target.value) || 1));
+              setQuestionCount(v);
+            }}
+            className="mt-2 w-24 text-center bg-panel border border-gold/25 rounded-md py-2 text-goldBright text-lg focus:outline-none focus:border-goldBright"
+          />
+        </label>
+
+        <div className="flex justify-center gap-2 mb-8 flex-wrap">
+          {[10, 20, 30, maxQ].filter((n, i, arr) => n <= maxQ && arr.indexOf(n) === i).map((n) => (
+            <button
+              key={n}
+              onClick={() => setQuestionCount(n)}
+              className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${
+                questionCount === n
+                  ? "border-goldBright text-goldBright bg-panel2"
+                  : "border-gold/20 text-muted hover:text-ink"
+              }`}
+            >
+              {n === maxQ ? `ყველა (${maxQ})` : n}
+            </button>
+          ))}
+        </div>
+
+        <p className="text-muted text-xs mb-8">
+          დრო: {mmss(questionCount * SECONDS_PER_QUESTION)} · გამოცდის დაწყების
+          შემდეგ საათი ირთვება და აღარ ჩერდება. კითხვების თანმიმდევრობა ყოველ
+          ჯერზე ახლიდან ირევა.
         </p>
         <button
           onClick={startExam}
@@ -131,6 +163,7 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
     );
   }
 
+  // --- შედეგების ეკრანი ---
   if (finished) {
     return (
       <div className="max-w-xl mx-auto">
@@ -141,6 +174,12 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
           <p className="font-display text-5xl text-goldBright mt-2">
             {score} / {questions.length}
           </p>
+          <div className="w-full h-1.5 bg-panel2 rounded-full mt-4 overflow-hidden">
+            <div
+              className="h-full bg-gold transition-all"
+              style={{ width: `${(score / Math.max(questions.length, 1)) * 100}%` }}
+            />
+          </div>
         </div>
         <div className="space-y-4">
           {questions.map((q, i) => {
@@ -186,36 +225,53 @@ export default function ExamRunner({ topic }: { topic: ExamSubtopic }) {
     );
   }
 
+  // --- კითხვის ეკრანი ---
   const q = questions[current];
   const given = answers[current];
+  const answeredCount = answers.filter((a) => a !== null).length;
 
   return (
     <div className="max-w-xl mx-auto">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-2">
         <span className="text-xs text-muted">
           კითხვა {current + 1} / {questions.length}
         </span>
         <span className="font-num text-goldBright text-lg">{mmss(secondsLeft)}</span>
       </div>
 
-      <div className="flex items-center justify-end gap-2 mb-3">
-        <span className="text-xs text-muted">ავტომატური გადასვლა</span>
-        <button
-          onClick={toggleAutoAdvance}
-          aria-pressed={autoAdvance}
-          className={`w-10 h-5 rounded-full transition-colors relative ${
-            autoAdvance ? "bg-gold" : "bg-panel2 border border-gold/20"
-          }`}
-        >
-          <span
-            className={`absolute top-0.5 w-4 h-4 rounded-full bg-void transition-transform ${
-              autoAdvance ? "translate-x-5" : "translate-x-0.5"
-            }`}
-          />
-        </button>
+      <div className="w-full h-1 bg-panel2 rounded-full mb-4 overflow-hidden">
+        <div
+          className="h-full bg-gold transition-all"
+          style={{ width: `${(answeredCount / questions.length) * 100}%` }}
+        />
       </div>
 
-      <div className="rounded-lg border border-gold/15 bg-panel p-6 mb-6">
+      <div className="flex items-center justify-between mb-3">
+        <button
+          onClick={() => setFinished(true)}
+          className="text-xs text-muted hover:text-wineBright transition-colors"
+        >
+          გამოცდის დასრულება ახლავე
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted">ავტომატური გადასვლა</span>
+          <button
+            onClick={toggleAutoAdvance}
+            aria-pressed={autoAdvance}
+            className={`w-10 h-5 rounded-full transition-colors relative ${
+              autoAdvance ? "bg-gold" : "bg-panel2 border border-gold/20"
+            }`}
+          >
+            <span
+              className={`absolute top-0.5 w-4 h-4 rounded-full bg-void transition-transform ${
+                autoAdvance ? "translate-x-5" : "translate-x-0.5"
+              }`}
+            />
+          </button>
+        </div>
+      </div>
+
+      <div className="rounded-lg border border-gold/15 bg-panel p-6 mb-6 shadow-sm shadow-black/10">
         <p className="text-ink text-lg mb-5">{q.question}</p>
         <div className="space-y-3">
           {q.options.map((opt, idx) => {
