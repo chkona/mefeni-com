@@ -9,12 +9,12 @@ const LINKS = [
   { href: "/", label: "მთავარი" },
   { href: "/kings", label: "მეფეები" },
   { href: "/dynasties", label: "დინასტიები" },
-  { href: "/battles", label: "ბრძოლები" },
   { href: "/timeline", label: "ქრონოლოგია" },
   { href: "/maps", label: "რუკები" },
   { href: "/churches", label: "ეკლესიები" },
   { href: "/heroes", label: "გმირები" },
   { href: "/abiturientebi", label: "აბიტურიენტები" },
+  { href: "/about", label: "ჩვენს შესახებ" },
 ];
 
 export default function Navbar() {
@@ -53,5 +53,6 @@ export default function Navbar() {
     </nav>
   );
 }
+
 
 
