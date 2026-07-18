@@ -54,3 +54,27 @@ body {
   @apply -translate-y-2 border-gold shadow-2xl shadow-black/40;
 }
 
+/* ძალიან მსუბუქი შემოსვლის ანიმაცია */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  opacity: 0;
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+
