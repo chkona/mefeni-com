@@ -10,7 +10,6 @@ const LINKS = [
   { href: "/kings", label: "მეფეები" },
   { href: "/dynasties", label: "დინასტიები" },
   { href: "/timeline", label: "ქრონოლოგია" },
-  { href: "/maps", label: "რუკები" },
   { href: "/churches", label: "ეკლესიები" },
   { href: "/heroes", label: "გმირები" },
   { href: "/abiturientebi", label: "აბიტურიენტები" },
