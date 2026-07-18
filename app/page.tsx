@@ -1,4 +1,5 @@
 import Link from "next/link";
+import OnThisDay from "@/components/OnThisDay";
 
 // ===================================================================
 // მთავარი გვერდის ტექსტები. ცვლილებისთვის უბრალოდ შეცვალე ქვემოთ
@@ -26,15 +27,15 @@ export default function HomePage() {
         }}
       />
 
-      <span className="font-num text-xs tracking-[0.32em] uppercase text-gold">{HERO_EYEBROW}</span>
+      <span className="font-num text-xs tracking-[0.32em] uppercase text-gold animate-fade-up" style={{ animationDelay: "0ms" }}>{HERO_EYEBROW}</span>
 
-      <h1 className="font-display font-bold text-5xl md:text-7xl leading-tight mt-6 bg-gradient-to-b from-goldBright via-gold to-[#8a6d1c] bg-clip-text text-transparent">
+      <h1 className="font-display font-bold text-5xl md:text-7xl leading-tight mt-6 bg-gradient-to-b from-goldBright via-gold to-[#8a6d1c] bg-clip-text text-transparent animate-fade-up" style={{ animationDelay: "80ms" }}>
         {HERO_TITLE}
       </h1>
 
-      <p className="max-w-xl mt-6 text-muted text-lg">{HERO_SUBTITLE}</p>
+      <p className="max-w-xl mt-6 text-muted text-lg animate-fade-up" style={{ animationDelay: "160ms" }}>{HERO_SUBTITLE}</p>
 
-      <div className="flex gap-4 flex-wrap justify-center mt-10">
+      <div className="flex gap-4 flex-wrap justify-center mt-10 animate-fade-up" style={{ animationDelay: "240ms" }}>
         <Link href="/kings" className="font-num text-sm uppercase tracking-wider px-8 py-4 bg-gold text-[#181209] rounded-sm hover:bg-goldBright transition">
           დაათვალიერე მეფეები
         </Link>
@@ -43,7 +44,7 @@ export default function HomePage() {
         </Link>
       </div>
 
-      <div className="flex gap-12 flex-wrap justify-center mt-16">
+      <div className="flex gap-12 flex-wrap justify-center mt-16 animate-fade-up" style={{ animationDelay: "320ms" }}>
         {STATS.map((s) => (
           <div key={s.label} className="text-center">
             <b className="font-num text-3xl text-goldBright block">{s.value}</b>
@@ -51,6 +52,11 @@ export default function HomePage() {
           </div>
         ))}
       </div>
+
+      <div className="animate-fade-up w-full" style={{ animationDelay: "400ms" }}>
+        <OnThisDay />
+      </div>
     </section>
   );
 }
+
