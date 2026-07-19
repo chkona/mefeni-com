@@ -13,6 +13,7 @@ const LINKS = [
   { href: "/churches", label: "ეკლესიები" },
   { href: "/heroes", label: "გმირები" },
   { href: "/abiturientebi", label: "აბიტურიენტები" },
+  { href: "/game", label: "თამაში" },
   { href: "/about", label: "ჩვენს შესახებ" },
 ];
 
@@ -52,6 +53,7 @@ export default function Navbar() {
     </nav>
   );
 }
+
 
 
 
