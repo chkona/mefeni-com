@@ -77,4 +77,54 @@ body {
   }
 }
 
+/* ქულის დამატების ანიმაცია */
+@keyframes score-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(1);
+  }
+}
+.animate-score-pop {
+  animation: score-pop 1.1s ease-out forwards;
+}
+
+/* კონფეტის ანიმაცია გამარჯვების ეკრანზე */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(540deg);
+    opacity: 0.9;
+  }
+}
+.animate-confetti {
+  animation: confetti-fall linear forwards;
+}
+
+/* მინიშნების ბარათის რბილი გამოჩენა */
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-card-in {
+  animation: card-in 0.4s ease-out forwards;
+}
+
+
 
