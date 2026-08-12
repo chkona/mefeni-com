@@ -51,7 +51,22 @@ export default function KingDetailPage({ params }: { params: { slug: string } })
           </>
         )}
 
-        <p className="mt-8 leading-relaxed text-ink/90 whitespace-pre-line">{king.bio}</p>
+        {king.bioSections && king.bioSections.length > 0 ? (
+          <div className="mt-8 space-y-6">
+            {king.bioSections.map((sec, i) => (
+              <div key={i}>
+                <h2 className="font-display text-xl text-goldBright border-b border-gold/15 pb-2 mb-3">
+                  {sec.heading}
+                </h2>
+                <p className="leading-relaxed text-ink/90 whitespace-pre-line">
+                  {sec.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-8 leading-relaxed text-ink/90 whitespace-pre-line">{king.bio}</p>
+        )}
         <div className="flex flex-wrap gap-2 mt-8">
           {king.tags.map((t) => (
             <span
@@ -75,3 +90,4 @@ export default function KingDetailPage({ params }: { params: { slug: string } })
     </article>
   );
 }
+
