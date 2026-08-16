@@ -4,9 +4,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
-  title: "მეფენი — ყველა მეფე ერთად",
+  title: "მეფენი  — ყველა მეფე ერთად",
   description:
     "ქართველ მეფეთა,ისტორია — ფარნავაზიდან გიორგი XII-მდე.",
 };
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <BackToTop />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
