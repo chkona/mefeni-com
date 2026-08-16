@@ -3,9 +3,10 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
-  title: "მეფენი.ge — ყველა მეფე ერთად",
+  title: "მეფენი.GE — ყველა მეფე ერთად",
   description:
     "ქართველ მეფეთა,ისტორია — ფარნავაზიდან გიორგი XII-მდე.",
 };
@@ -32,9 +33,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="pt-20">{children}</main>
         <Footer />
         <BackToTop />
+        <Analytics />
       </body>
     </html>
   );
 }
-
-
