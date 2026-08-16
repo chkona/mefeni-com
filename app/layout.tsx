@@ -6,7 +6,7 @@ import BackToTop from "@/components/BackToTop";
 import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
-  title: "მეფენი.GE — ყველა მეფე ერთად",
+  title: "მეფენი — ყველა მეფე ერთად",
   description:
     "ქართველ მეფეთა,ისტორია — ფარნავაზიდან გიორგი XII-მდე.",
 };
