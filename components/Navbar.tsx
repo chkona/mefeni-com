@@ -23,7 +23,7 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-4 bg-void/70 backdrop-blur-xl border-b border-gold/20">
       <Link href="/" className="flex items-center gap-2 font-display font-black text-goldBright text-xl">
         <span className="w-7 h-7 rounded-full border border-gold flex items-center justify-center font-num text-sm text-gold">♛</span>
-        მეფენი.ge
+        მეფენი.GE
       </Link>
 
       <div className="hidden md:flex gap-7 text-sm">
