@@ -3,7 +3,7 @@
 // როცა მზად გექნებათ, უბრალოდ შეავსეთ FACEBOOK_URL და EMAIL
 // ქვემოთ — დანარჩენი კოდი აღარაფერს ითხოვს შეცვლას.
 // ============================================================
-const FACEBOOK_URL = ""; // მაგ: "https://facebook.com/mefeni.ge"
+const FACEBOOK_URL = "https://www.facebook.com/share/1BuLPuA6Lp/?mibextid=wwXIfr"; // მაგ: "https://facebook.com/mefeni.ge"
 const EMAIL = ""; // მაგ: "info@mefeni.ge"
 
 export default function AboutPage() {
