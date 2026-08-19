@@ -26,16 +26,16 @@ export default function AboutPage() {
         პროექტი მუდმივად ივსება და იხვეწება.
       </p>
 
-      <div className="flex items-center justify-center gap-6">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
         {FACEBOOK_URL ? (
           <a
             href={FACEBOOK_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-gold hover:text-goldBright transition-colors text-sm"
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full border border-gold/30 text-gold hover:text-goldBright hover:border-gold/60 hover:bg-gold/5 transition-all text-sm font-medium"
           >
-            <Facebook size={18} />
-            Facebook გვერდი
+            <Facebook size={16} strokeWidth={2} />
+            <span>Facebook გვერდი</span>
           </a>
         ) : (
           <span className="text-muted text-sm italic">Facebook გვერდი მალე დაემატება</span>
@@ -44,10 +44,10 @@ export default function AboutPage() {
         {EMAIL ? (
           <a
             href={`mailto:${EMAIL}`}
-            className="flex items-center gap-2 text-gold hover:text-goldBright transition-colors text-sm"
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full border border-gold/30 text-gold hover:text-goldBright hover:border-gold/60 hover:bg-gold/5 transition-all text-sm font-medium"
           >
-            <Mail size={18} />
-            {EMAIL}
+            <Mail size={16} strokeWidth={2} />
+            <span>{EMAIL}</span>
           </a>
         ) : (
           <span className="text-muted text-sm italic">ელ. ფოსტა მალე დაემატება</span>
@@ -56,3 +56,4 @@ export default function AboutPage() {
     </section>
   );
 }
+
