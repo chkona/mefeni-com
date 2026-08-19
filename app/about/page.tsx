@@ -1,3 +1,5 @@
+import { Facebook, Mail } from "lucide-react";
+
 // ============================================================
 // "ჩვენს შესახებ" გვერდის ტექსტები და კონტაქტის ბმულები.
 // როცა მზად გექნებათ, უბრალოდ შეავსეთ FACEBOOK_URL და EMAIL
@@ -30,8 +32,9 @@ export default function AboutPage() {
             href={FACEBOOK_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gold hover:text-goldBright transition-colors text-sm"
+            className="flex items-center gap-2 text-gold hover:text-goldBright transition-colors text-sm"
           >
+            <Facebook size={18} />
             Facebook გვერდი
           </a>
         ) : (
@@ -41,8 +44,9 @@ export default function AboutPage() {
         {EMAIL ? (
           <a
             href={`mailto:${EMAIL}`}
-            className="text-gold hover:text-goldBright transition-colors text-sm"
+            className="flex items-center gap-2 text-gold hover:text-goldBright transition-colors text-sm"
           >
+            <Mail size={18} />
             {EMAIL}
           </a>
         ) : (
