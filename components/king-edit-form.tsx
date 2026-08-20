@@ -37,7 +37,7 @@ export function KingEditForm({ king }: { king: King }) {
     setError(null);
     setSaved(false);
 
-    const payload: UpdateKingInput = { slug: form.slug, ...form };
+    const payload: UpdateKingInput = { ...form, slug: form.slug };
     const result = await updateKing(payload);
 
     setSaving(false);
