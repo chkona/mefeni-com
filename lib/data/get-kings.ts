@@ -12,6 +12,8 @@ export type King = {
   summary: string;
   bio: string;
   tags: string[];
+  bio_sections: any[];
+  sources: string;
 };
 
 export async function getAllKings(): Promise<King[]> {
