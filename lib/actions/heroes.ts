@@ -41,7 +41,7 @@ export async function createHero(input: HeroInput) {
 
   if (error) return { error: error.message };
   revalidatePath("/heroes");
-  redirect(/heroes/${slug});
+  redirect(`/heroes/${slug}`);
 }
 
 export async function updateHero(input: HeroInput) {
@@ -58,7 +58,7 @@ export async function updateHero(input: HeroInput) {
     .eq("slug", slug);
 
   if (error) return { error: error.message };
-  revalidatePath(/heroes/${slug});
+  revalidatePath(`/heroes/${slug}`);
   return { success: true };
 }
 
