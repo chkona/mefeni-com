@@ -47,6 +47,29 @@ body {
   color: rgb(var(--color-panel));
 }
 
+/* ფორმის ველები (input/textarea/select) — ტექსტი და ფონი
+   საიტის თემის ფერებით, რომ წერისას კარგად ჩანდეს ტექსტი
+   როგორც მუქ, ისე ღია თემაზე. */
+input,
+textarea,
+select {
+  background-color: rgb(var(--color-panel2));
+  color: rgb(var(--color-ink));
+  border-color: rgb(var(--color-gold) / 0.3);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgb(var(--color-muted));
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: rgb(var(--color-gold));
+}
+
 .glass-card {
   @apply bg-white/[0.035] border border-gold/20 backdrop-blur-xl rounded-md transition-all duration-300;
 }
@@ -125,6 +148,5 @@ body {
 .animate-card-in {
   animation: card-in 0.4s ease-out forwards;
 }
-
 
 
