@@ -36,6 +36,12 @@ export default function Navbar() {
 
       <div className="flex items-center gap-3">
         <ThemeToggle />
+        <Link
+          href="/login"
+          className="hidden md:inline-block text-sm opacity-80 hover:opacity-100 hover:text-goldBright transition"
+        >
+          შესვლა
+        </Link>
         <button className="md:hidden text-gold text-2xl" onClick={() => setOpen(!open)}>
           ☰
         </button>
@@ -48,12 +54,11 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
+          <Link href="/login" onClick={() => setOpen(false)}>
+            შესვლა
+          </Link>
         </div>
       )}
     </nav>
   );
 }
-
-
-
-
