@@ -6,7 +6,7 @@ import { HeroEditForm } from "@/components/hero-edit-form";
 export default async function EditHeroPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const profile = await getCurrentProfile();
-  if (!profile) redirect(/login?next=/admin/heroes/${slug}/edit);
+  if (!profile) redirect(`/login?next=/admin/heroes/${slug}/edit`);
   if (profile.role !== "editor" && profile.role !== "admin") redirect("/admin/request-access");
 
   const hero = await getHeroBySlug(slug);
