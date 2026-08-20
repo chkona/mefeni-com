@@ -27,7 +27,7 @@ async function migrate() {
     const chunk = batch.slice(i, i + 100);
     const { error } = await supabase.from("kings").upsert(chunk, { onConflict: "slug" });
     if (error) { console.error(error.message); process.exit(1); }
-    console.log(${Math.min(i + 100, batch.length)}/${batch.length});
+    console.log(`${Math.min(i + 100, batch.length)}/${batch.length}`);
   }
   console.log("დასრულდა.");
 }
