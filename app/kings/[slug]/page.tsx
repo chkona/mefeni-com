@@ -1,14 +1,17 @@
-import { kings } from "@/lib/data/kings";
+import { getKingBySlug } from "@/lib/data/get-kings";
+import { isEditor } from "@/lib/auth/get-profile";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
-export function generateStaticParams() {
-  return kings.map((k) => ({ slug: k.slug }));
-}
+export const revalidate = 0;
 
-export default function KingDetailPage({ params }: { params: { slug: string } }) {
-  const king = kings.find((k) => k.slug === params.slug);
+export default async function KingDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const king = await getKingBySlug(slug);
   if (!king) return notFound();
+
+  const canEdit = await isEditor();
 
   return (
     <article>
@@ -21,10 +24,7 @@ export default function KingDetailPage({ params }: { params: { slug: string } })
             priority
             className="object-cover object-top"
           />
-          {/* ქვედა გრადიენტი, რომ სურათი ბუნებრივად გადავიდეს ბნელ ფონში */}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-
-          {/* სათაური სურათზე, ქვედა კიდეში */}
           <div className="absolute bottom-0 left-0 right-0 px-6 pb-8 max-w-3xl mx-auto">
             <span className="font-num text-xs tracking-widest uppercase text-gold">
               {king.dynasty} დინასტია
@@ -38,22 +38,33 @@ export default function KingDetailPage({ params }: { params: { slug: string } })
       )}
 
       <section className="max-w-3xl mx-auto px-6 py-16">
-        {/* თუ სურათი არ არსებობს, სათაური აქ ჩნდება */}
-        {!king.image && (
-          <>
-            <span className="font-num text-xs tracking-widest uppercase text-gold">
-              {king.dynasty} დინასტია
-            </span>
-            <h1 className="font-display text-4xl md:text-5xl text-goldBright mt-3">
-              {king.name}
-            </h1>
-            <p className="font-num text-muted mt-2">{king.reign}</p>
-          </>
-        )}
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            {!king.image && (
+              <>
+                <span className="font-num text-xs tracking-widest uppercase text-gold">
+                  {king.dynasty} დინასტია
+                </span>
+                <h1 className="font-display text-4xl md:text-5xl text-goldBright mt-3">
+                  {king.name}
+                </h1>
+                <p className="font-num text-muted mt-2">{king.reign}</p>
+              </>
+            )}
+          </div>
+          {canEdit && (
+            <Link
+              href={`/admin/kings/${king.slug}/edit`}
+              className="shrink-0 rounded border border-gold/30 px-3 py-1.5 text-sm text-gold hover:bg-gold/10"
+            >
+              რედაქტირება
+            </Link>
+          )}
+        </div>
 
-        {king.bioSections && king.bioSections.length > 0 ? (
+        {(king as any).bio_sections && (king as any).bio_sections.length > 0 ? (
           <div className="mt-8 space-y-6">
-            {king.bioSections.map((sec, i) => (
+            {(king as any).bio_sections.map((sec: any, i: number) => (
               <div key={i}>
                 <h2 className="font-display text-xl text-goldBright border-b border-gold/15 pb-2 mb-3">
                   {sec.heading}
@@ -67,27 +78,22 @@ export default function KingDetailPage({ params }: { params: { slug: string } })
         ) : (
           <p className="mt-8 leading-relaxed text-ink/90 whitespace-pre-line">{king.bio}</p>
         )}
+
         <div className="flex flex-wrap gap-2 mt-8">
           {king.tags.map((t) => (
-            <span
-              key={t}
-              className="text-xs px-3 py-1 border border-gold/20 rounded-full text-muted"
-            >
+            <span key={t} className="text-xs px-3 py-1 border border-gold/20 rounded-full text-muted">
               {t}
             </span>
           ))}
         </div>
 
         <div className="mt-10 pt-6 border-t border-gold/20">
-          <h2 className="font-num text-xs tracking-widest uppercase text-gold">
-            წყაროები
-          </h2>
+          <h2 className="font-num text-xs tracking-widest uppercase text-gold">წყაროები</h2>
           <p className="mt-2 text-sm text-muted whitespace-pre-line">
-            {king.sources && king.sources.trim() !== "" ? king.sources : "წყარო მალე დაემატება."}
+            {(king as any).sources && (king as any).sources.trim() !== "" ? (king as any).sources : "წყარო მალე დაემატება."}
           </p>
         </div>
       </section>
     </article>
   );
 }
-
