@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentProfile } from "@/lib/auth/get-profile";
 
+export type BioSection = { heading: string; text: string };
+
 export type UpdateKingInput = {
   slug: string;
   name?: string;
@@ -14,6 +16,8 @@ export type UpdateKingInput = {
   bio?: string;
   image?: string;
   tags?: string[];
+  bio_sections?: BioSection[];
+  sources?: string;
 };
 
 export async function updateKing(input: UpdateKingInput) {
